@@ -1,0 +1,2513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIT237: Programming and Algorithms — Fill-in-the-Gap CBT Powered By Moses. Contact: 08167390958</title>
+  <!-- Load Google Font: Inter & JetBrains Mono for technical terms -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & DESIGN SYSTEM TOKENS
+       ========================================================================== */
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-muted: #e2e8f0;
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+
+      --primary: #1e40af;
+      --primary-hover: #1d4ed8;
+      --primary-light: #dbeafe;
+      --primary-border: #93c5fd;
+
+      --accent: #0f766e;
+      --accent-light: #ccfbf1;
+
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --success-border: #86efac;
+
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --danger-border: #fca5a5;
+
+      --warning: #b45309;
+      --warning-bg: #fef3c7;
+      --warning-border: #fcd34d;
+
+      --border-color: #cbd5e1;
+      --border-light: #e2e8f0;
+
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.1);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==========================================================================
+       RESET & BASE TYPOGRAPHY
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    button, input, select {
+      font-family: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ==========================================================================
+       HEADER & TOP NAVIGATION BAR
+       ========================================================================== */
+    .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 0.9rem 1.5rem;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-badge {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #93c5fd;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.04em;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      display: block;
+    }
+
+    /* Exam HUD Controls inside Header */
+    .exam-hud {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .timer-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    .timer-pill.warning {
+      background: rgba(180, 83, 9, 0.85);
+      border-color: #fcd34d;
+      color: #fef3c7;
+    }
+
+    .timer-pill.danger {
+      background: rgba(185, 28, 28, 0.9);
+      border-color: #fca5a5;
+      color: #fee2e2;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    /* Progress Bar Strip */
+    .progress-strip {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.15);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #34d399);
+      transition: width 0.35s ease;
+    }
+
+    /* ==========================================================================
+       BUTTONS
+       ========================================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem 1.2rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(30, 64, 175, 0.25);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #166534;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #b91c1c;
+    }
+
+    .btn-outline {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background: var(--bg-subtle);
+      border-color: #94a3b8;
+    }
+
+    .btn-flag {
+      background: var(--bg-surface);
+      color: var(--warning);
+      border-color: var(--warning-border);
+    }
+
+    .btn-flag.active {
+      background: var(--warning-bg);
+      border-color: var(--warning);
+      font-weight: 700;
+    }
+
+    .btn-sm {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.84rem;
+    }
+
+    .btn-lg {
+      padding: 0.85rem 1.75rem;
+      font-size: 1.02rem;
+    }
+
+    /* ==========================================================================
+       MAIN CONTAINER & VIEWS
+       ========================================================================== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 3rem;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ==========================================================================
+       1. START / CONFIGURATION SCREEN
+       ========================================================================== */
+    .setup-wrapper {
+      max-width: 780px;
+      margin: 0.5rem auto;
+    }
+
+    .setup-hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f766e 100%);
+      color: #ffffff;
+      padding: 2rem;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .setup-hero .course-pill {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.03em;
+    }
+
+    .setup-hero h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .setup-hero p {
+      color: #e2e8f0;
+      font-size: 0.95rem;
+      max-width: 620px;
+    }
+
+    .setup-body {
+      padding: 1.75rem 2rem 2rem;
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.35rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .config-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .config-group label {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .config-group .hint-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .select-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border-color);
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 0.93rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .select-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* Toggle Switch Card */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+    }
+
+    .toggle-row span {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .toggle-row input[type="checkbox"] {
+      width: 1.15rem;
+      height: 1.15rem;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .topic-pills-preview {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.15rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .topic-pills-preview h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .topic-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .topic-tag {
+      font-size: 0.78rem;
+      font-weight: 500;
+      background: #ffffff;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-light);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+    }
+
+    .setup-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-light);
+      flex-wrap: wrap;
+    }
+
+    .bank-stat {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .bank-stat strong {
+      color: var(--primary);
+    }
+
+    /* ==========================================================================
+       2. CBT EXAM WORKSPACE
+       ========================================================================== */
+    .exam-layout {
+      display: grid;
+      grid-template-columns: 1fr 310px;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .question-panel {
+      padding: 1.75rem 2rem;
+    }
+
+    .question-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1.35rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid var(--border-light);
+      flex-wrap: wrap;
+    }
+
+    .q-number-badge {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .q-topic-badge {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .question-prompt {
+      font-size: 1.22rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Styled Visual Blank inside Question Text */
+    .visual-blank {
+      display: inline-block;
+      min-width: 145px;
+      padding: 0 0.65rem;
+      margin: 0 0.25rem;
+      border-bottom: 2.5px dashed var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.02rem;
+      font-weight: 600;
+      text-align: center;
+      border-radius: 4px 4px 0 0;
+      vertical-align: baseline;
+      transition: var(--transition);
+    }
+
+    .visual-blank.filled {
+      border-bottom-style: solid;
+      background: #eff6ff;
+    }
+
+    /* Input Area */
+    .answer-box {
+      background: var(--bg-subtle);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .answer-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.55rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .answer-input-row {
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .answer-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.8rem 1rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: #ffffff;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+
+    .answer-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    .answer-input:disabled {
+      background: #f1f5f9;
+      color: var(--text-secondary);
+    }
+
+    /* Hint & Instant Feedback Banners */
+    .hint-box {
+      margin-top: 0.85rem;
+      padding: 0.65rem 0.9rem;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-sm);
+      color: #92400e;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .instant-feedback {
+      margin-top: 1rem;
+      padding: 0.9rem 1.1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.93rem;
+      font-weight: 500;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    .instant-feedback.correct {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: #14532d;
+    }
+
+    .instant-feedback.incorrect {
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      color: #7f1d1d;
+    }
+
+    .question-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-light);
+      flex-wrap: wrap;
+    }
+
+    .nav-pair {
+      display: flex;
+      gap: 0.65rem;
+    }
+
+    /* Sidebar Question Palette */
+    .palette-panel {
+      padding: 1.35rem;
+      position: sticky;
+      top: 5.25rem;
+    }
+
+    .palette-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.9rem;
+    }
+
+    .palette-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .palette-count {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.45rem;
+      max-height: 340px;
+      overflow-y: auto;
+      padding-right: 0.2rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .q-node {
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .q-node:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .q-node.answered {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .q-node.flagged {
+      background: var(--warning-bg);
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .q-node.answered.flagged {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--warning);
+      box-shadow: inset 0 0 0 2px var(--warning-border);
+    }
+
+    .q-node.current {
+      outline: 2.5px solid #0f172a;
+      outline-offset: 1px;
+      transform: scale(1.04);
+    }
+
+    /* Instant mode node colors */
+    .q-node.instant-right {
+      background: var(--success);
+      border-color: var(--success);
+      color: #ffffff;
+    }
+
+    .q-node.instant-wrong {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: #ffffff;
+    }
+
+    .palette-legend {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--border-light);
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       3. RESULTS & ANALYTICS SCREEN
+       ========================================================================== */
+    .results-wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .score-banner {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .score-circle {
+      width: 138px;
+      height: 138px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 8px solid var(--primary);
+      background: var(--bg-subtle);
+      text-align: center;
+    }
+
+    .score-circle.pass {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .score-circle.fail {
+      border-color: var(--danger);
+      background: #fef2f2;
+    }
+
+    .score-pct {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text-primary);
+    }
+
+    .score-sub {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 0.2rem;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+    }
+
+    .status-badge.pass {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .status-badge.fail {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.15rem;
+    }
+
+    .stat-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-md);
+    }
+
+    .stat-box .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .stat-box .val {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-top: 0.15rem;
+    }
+
+    /* Topic Breakdown */
+    .topic-breakdown {
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .topic-breakdown h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .topic-bars {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem 1.75rem;
+    }
+
+    .topic-bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .topic-bar-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .topic-track {
+      height: 8px;
+      background: var(--bg-muted);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .topic-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    /* Review Section */
+    .review-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.45rem;
+      background: var(--bg-surface);
+      padding: 0.3rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .filter-tab {
+      padding: 0.45rem 0.9rem;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .filter-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .review-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.95rem;
+    }
+
+    .review-item {
+      padding: 1.25rem 1.5rem;
+      border-left: 5px solid var(--border-color);
+    }
+
+    .review-item.correct {
+      border-left-color: var(--success);
+    }
+
+    .review-item.incorrect {
+      border-left-color: var(--danger);
+    }
+
+    .review-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .review-q-text {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.85rem;
+      color: var(--text-primary);
+    }
+
+    .review-answers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      font-size: 0.88rem;
+      background: var(--bg-subtle);
+      padding: 0.7rem 0.95rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .ans-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .ans-chip.right {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .ans-chip.wrong {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    /* ==========================================================================
+       CUSTOM MODAL DIALOG (Replaces window.confirm / window.alert)
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 100;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      width: 100%;
+      padding: 1.65rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-card h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.35rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.65rem;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .exam-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-panel {
+        position: static;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(8, 1fr);
+        max-height: 210px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .config-grid, .topic-bars {
+        grid-template-columns: 1fr;
+      }
+
+      .score-banner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        justify-items: center;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+
+      .question-panel {
+        padding: 1.25rem;
+      }
+
+      .question-prompt {
+        font-size: 1.08rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       STICKY HEADER & EXAM HUD
+       ======================================================================== -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-badge">CIT237</span>
+        <div>
+          <div class="brand-title">Programming and Algorithms</div>
+          <span class="brand-subtitle">Computer-Based Test (CBT) • Fill-in-the-Gap Practice</span>
+        </div>
+      </div>
+
+      <!-- Visible only during active exam -->
+      <div id="examHud" class="exam-hud hidden">
+        <div id="timerDisplay" class="timer-pill" title="Time Remaining">
+          <span>⏱</span>
+          <span id="timerText">20:00</span>
+        </div>
+        <button type="button" id="submitExamBtn" class="btn btn-danger btn-sm">
+          Submit Exam
+        </button>
+      </div>
+    </div>
+
+    <div id="progressStrip" class="progress-strip hidden">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN CONTENT CONTAINER
+       ======================================================================== -->
+  <main class="container">
+
+    <!-- 1. START / CONFIGURATION SCREEN -->
+    <section id="setupScreen" class="setup-wrapper card">
+      <div class="setup-hero">
+        <span class="course-pill"> QUESTION BANK</span>
+        <span class="course-pill"> POWERED BY MOSES. Contact:08167390958</span>
+        <h1>CIT237: Programming &amp; Algorithms CBT</h1>
+        <p>
+          Master key definitions, programming paradigms, translators, data structures,
+          complexity classes, and sorting/searching algorithms through interactive fill-in-the-gap testing.
+        </p>
+      </div>
+
+      <div class="setup-body">
+        <div class="config-grid">
+          <div class="config-group">
+            <label for="questionCountSelect">Number of Questions</label>
+            <select id="questionCountSelect" class="select-control">
+              <option value="10">10 Questions (Quick Drill)</option>
+              <option value="20" selected>20 Questions (Standard Practice)</option>
+              <option value="30">30 Questions (Extended Mock)</option>
+              <option value="all">All 60 Questions (Full Mastery)</option>
+            </select>
+            <span class="hint-sub">Drawn from verified CIT237 summary items.</span>
+          </div>
+
+          <div class="config-group">
+            <label for="timerSelect">Countdown Timer</label>
+            <select id="timerSelect" class="select-control">
+              <option value="10">10 Minutes</option>
+              <option value="20" selected>20 Minutes</option>
+              <option value="30">30 Minutes</option>
+              <option value="0">Untimed Practice Mode</option>
+            </select>
+            <span class="hint-sub">Auto-submits when countdown hits 00:00.</span>
+          </div>
+
+          <div class="config-group">
+            <label for="feedbackModeSelect">Grading Mode</label>
+            <select id="feedbackModeSelect" class="select-control">
+              <option value="exam" selected>Exam Mode (Grade upon final submission)</option>
+              <option value="instant">Instant Feedback Mode (Check each answer immediately)</option>
+            </select>
+            <span class="hint-sub">Choose between realistic CBT simulation or guided study.</span>
+          </div>
+
+          <div class="config-group">
+            <label>Question Order</label>
+            <label class="toggle-row" for="shuffleToggle">
+              <span>Shuffle Questions Randomly</span>
+              <input type="checkbox" id="shuffleToggle" checked />
+            </label>
+            <span class="hint-sub">Randomizes question sequence every session.</span>
+          </div>
+        </div>
+
+        <div class="topic-pills-preview">
+          <h3>Topics Covered in Question Bank (60 Questions)</h3>
+          <div id="topicTagsContainer" class="topic-tags"></div>
+        </div>
+
+        <div class="setup-footer">
+          <div class="bank-stat">
+            Question Bank Status: <strong>60 Verified Items Ready</strong>
+          </div>
+          <button type="button" id="startExamBtn" class="btn btn-primary btn-lg">
+            Start CBT Session →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ACTIVE CBT EXAM INTERFACE -->
+    <section id="examScreen" class="exam-layout hidden">
+      <!-- Left: Question Workspace -->
+      <div class="card question-panel">
+        <div class="question-meta">
+          <span id="questionCounterBadge" class="q-number-badge">Question 1 of 20</span>
+          <span id="questionTopicBadge" class="q-topic-badge">Programming Languages</span>
+        </div>
+
+        <!-- Sentence with dynamic visual blank -->
+        <div id="questionPrompt" class="question-prompt"></div>
+
+        <!-- Text Answer Input -->
+        <div class="answer-box">
+          <div class="answer-label">
+            <span>Type the missing word or phrase:</span>
+            <button type="button" id="hintBtn" class="btn btn-outline btn-sm">
+              💡 Show Hint
+            </button>
+          </div>
+
+          <div class="answer-input-row">
+            <input
+              type="text"
+              id="answerInput"
+              class="answer-input"
+              placeholder="Enter your answer here..."
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+            <button type="button" id="checkInstantBtn" class="btn btn-success hidden">
+              Check Answer
+            </button>
+          </div>
+
+          <div id="hintDisplay" class="hint-box hidden"></div>
+          <div id="instantFeedbackDisplay" class="instant-feedback hidden"></div>
+        </div>
+
+        <!-- Bottom Navigation Controls -->
+        <div class="question-controls">
+          <div class="nav-pair">
+            <button type="button" id="prevBtn" class="btn btn-outline">
+              ← Previous
+            </button>
+            <button type="button" id="nextBtn" class="btn btn-primary">
+              Next →
+            </button>
+          </div>
+
+          <button type="button" id="flagBtn" class="btn btn-flag">
+            🚩 Flag for Review
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Question Navigation Grid -->
+      <aside class="card palette-panel">
+        <div class="palette-header">
+          <h2>Question Navigator</h2>
+          <span id="answeredSummaryText" class="palette-count">0 / 20 Answered</span>
+        </div>
+
+        <div id="paletteGrid" class="palette-grid"></div>
+
+        <div class="palette-legend">
+          <div class="legend-item">
+            <span class="legend-dot" style="background: var(--primary);"></span>
+            <span>Answered</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background: var(--bg-subtle); border: 1.5px solid var(--border-color);"></span>
+            <span>Unanswered</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background: var(--warning-bg); border: 1.5px solid var(--warning);"></span>
+            <span>Flagged</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background: #ffffff; outline: 2px solid #0f172a;"></span>
+            <span>Current</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- 3. RESULTS & REVIEW SCREEN -->
+    <section id="resultsScreen" class="results-wrapper hidden">
+      <!-- Score Summary Card -->
+      <div class="card score-banner">
+        <div id="scoreCircle" class="score-circle">
+          <span id="scorePercentage" class="score-pct">0%</span>
+          <span id="scoreGradeLabel" class="score-sub">SCORE</span>
+        </div>
+
+        <div>
+          <span id="passFailBadge" class="status-badge">PASSED</span>
+          <h2 id="resultHeadline" style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.35rem;">
+            Assessment Completed
+          </h2>
+          <p id="resultSubtext" style="color: var(--text-secondary); font-size: 0.92rem;">
+            Review your performance breakdown and inspect the official PDF answers below.
+          </p>
+
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="label">Raw Score</div>
+              <div id="rawScoreText" class="val">0 / 20</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Time Taken</div>
+              <div id="timeTakenText" class="val">00:00</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Accuracy Rate</div>
+              <div id="accuracyText" class="val">0%</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap;">
+            <button type="button" id="retakeMissedBtn" class="btn btn-primary">
+              ↻ Retake Missed Questions
+            </button>
+            <button type="button" id="newSessionBtn" class="btn btn-outline">
+              Start New Session
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Topic Performance Breakdown -->
+      <div class="card topic-breakdown">
+        <h2>Performance by Topic</h2>
+        <div id="topicBreakdownGrid" class="topic-bars"></div>
+      </div>
+
+      <!-- Answer Review List -->
+      <div class="review-header">
+        <h2 style="font-size: 1.15rem; font-weight: 800;">Detailed Question Review</h2>
+        <div class="filter-tabs" role="tablist">
+          <button type="button" class="filter-tab active" data-filter="all">All (<span id="countAll">0</span>)</button>
+          <button type="button" class="filter-tab" data-filter="correct">Correct (<span id="countCorrect">0</span>)</button>
+          <button type="button" class="filter-tab" data-filter="incorrect">Incorrect (<span id="countIncorrect">0</span>)</button>
+        </div>
+      </div>
+
+      <div id="reviewList" class="review-list"></div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       CUSTOM CONFIRMATION MODAL (No window.confirm / window.alert)
+       ======================================================================== -->
+  <div id="confirmModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <h3 id="modalTitle">Submit CBT Examination?</h3>
+      <p id="modalMessage">Are you sure you want to finish and submit your answers?</p>
+      <div class="modal-actions">
+        <button type="button" id="modalCancelBtn" class="btn btn-outline">Continue Exam</button>
+        <button type="button" id="modalConfirmBtn" class="btn btn-danger">Yes, Submit Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       APPLICATION JAVASCRIPT
+       ======================================================================== -->
+  <script>
+    /**
+     * CIT237: Programming and Algorithms
+     * Curated 60-Question Fill-in-the-Gap Bank extracted directly from the PDF Summary.
+     * Each item includes:
+     *  - id: Unique identifier
+     *  - topic: Course module / category
+     *  - question: Sentence containing '_______' for the gap
+     *  - answer: Official answer from the CIT237 summary
+     *  - aliases: Accepted equivalent spellings/phrasings
+     */
+    const QUESTION_BANK = [
+      // --- 1. Programming Languages & Levels ---
+      {
+        id: 1,
+        topic: "Programming Languages",
+        question: "_______ are languages through which we can instruct the computer to carry out some processes or tasks.",
+        answer: "Programming languages",
+        aliases: ["programming language"]
+      },
+      {
+        id: 2,
+        topic: "Programming Languages",
+        question: "A _______ is a set of codes that instructs the computer to carry out some processes.",
+        answer: "Program",
+        aliases: ["programme"]
+      },
+      {
+        id: 3,
+        topic: "Programming Languages",
+        question: "_______ is the process of writing programs.",
+        answer: "Programming",
+        aliases: []
+      },
+      {
+        id: 4,
+        topic: "Programming Languages",
+        question: "_______ is a set of binary coded instructions, which consists of zeros (0) and ones (1).",
+        answer: "Machine language",
+        aliases: ["machine code"]
+      },
+      {
+        id: 5,
+        topic: "Programming Languages",
+        question: "The _______ generation of computers was coded in machine language that was specific to each model of computer.",
+        answer: "First",
+        aliases: ["1st"]
+      },
+      {
+        id: 6,
+        topic: "Programming Languages",
+        question: "Low level programming language is also called _______.",
+        answer: "Assembly language",
+        aliases: ["assembly"]
+      },
+      {
+        id: 7,
+        topic: "Programming Languages",
+        question: "_______ consists of English-like codes and is independent of the computer hardware.",
+        answer: "High Level Language",
+        aliases: ["high-level language", "high level programming language", "high-level programming language"]
+      },
+
+      // --- 2. Programming Paradigms & Communities ---
+      {
+        id: 8,
+        topic: "Programming Paradigms",
+        question: "A _______ is a series of steps, each of which performs a calculation, retrieves input, or produces output.",
+        answer: "Procedural program",
+        aliases: ["procedural programming", "procedural"]
+      },
+      {
+        id: 9,
+        topic: "Programming Paradigms",
+        question: "The fundamental building blocks of _______ are object modelling, classification and inheritance.",
+        answer: "Object-Oriented Programming",
+        aliases: ["object oriented programming", "oop", "object-oriented (oo) programming"]
+      },
+      {
+        id: 10,
+        topic: "Programming Paradigms",
+        question: "A _______ is a collection of mathematical functions, each with an input (domain) and a result (range).",
+        answer: "Functional program",
+        aliases: ["functional programming", "functional"]
+      },
+      {
+        id: 11,
+        topic: "Programming Paradigms",
+        question: "A _______ programme is a collection of logical declarations about what outcome a function should accomplish rather than how it should be accomplished.",
+        answer: "Logic",
+        aliases: ["logic program", "logic programming"]
+      },
+      {
+        id: 12,
+        topic: "Programming Paradigms",
+        question: "The major logic programming language is _______.",
+        answer: "Prolog",
+        aliases: []
+      },
+      {
+        id: 13,
+        topic: "Programming Paradigms",
+        question: "An _______ is a continuous loop that responds to events that are generated in an unpredictable order.",
+        answer: "Event driven program",
+        aliases: ["event-driven program", "event driven programming", "event-driven programming", "event driven"]
+      },
+      {
+        id: 14,
+        topic: "Programming Paradigms",
+        question: "A _______ program is a collection of cooperating processes, sharing information with each other from time to time but generally operating asynchronously.",
+        answer: "Concurrent",
+        aliases: ["concurrent program", "concurrent programming"]
+      },
+      {
+        id: 15,
+        topic: "Programming Paradigms",
+        question: "In programming application communities, the acronym MIS means _______.",
+        answer: "Management Information System",
+        aliases: ["management information systems"]
+      },
+      {
+        id: 16,
+        topic: "Programming Paradigms",
+        question: "The _______ community is concerned about developing programs that model human intelligent behaviour, logical deduction, and cognition.",
+        answer: "Artificial Intelligence",
+        aliases: ["ai"]
+      },
+      {
+        id: 17,
+        topic: "Programming Paradigms",
+        question: "_______ are those who design and maintain the basic software that runs operating system components, networks software, compilers and debuggers.",
+        answer: "System programmers",
+        aliases: ["systems programmers", "system programmer"]
+      },
+
+      // --- 3. Translators & Development Tools ---
+      {
+        id: 18,
+        topic: "Translators & Tools",
+        question: "A _______ is a program that translates another program written in any programming language other than machine language into executable machine code.",
+        answer: "Translator",
+        aliases: []
+      },
+      {
+        id: 19,
+        topic: "Translators & Tools",
+        question: "An _______ is a program that converts programs written in assembly or low-level language to machine language.",
+        answer: "Assembler",
+        aliases: []
+      },
+      {
+        id: 20,
+        topic: "Translators & Tools",
+        question: "A _______ converts the entire source program into object code before the entire program is executed, whereas an interpreter translates line by line.",
+        answer: "Compiler",
+        aliases: []
+      },
+      {
+        id: 21,
+        topic: "Translators & Tools",
+        question: "An _______ allows a program to be typed on the keyboard, saved on a disk, retrieved from the disk, and amended as necessary.",
+        answer: "Editor",
+        aliases: ["text editor"]
+      },
+      {
+        id: 22,
+        topic: "Translators & Tools",
+        question: "A _______ picks up the machine-oriented program and combines it with any necessary software to enable the program to be run.",
+        answer: "Linker/loader",
+        aliases: ["linker", "loader", "linker or loader", "linker and loader"]
+      },
+
+      // --- 4. Program Development, Testing & Documentation ---
+      {
+        id: 23,
+        topic: "Program Development",
+        question: "_______ is the first stage of program development where the clear statement of the problem is stated.",
+        answer: "Problem analysis",
+        aliases: []
+      },
+      {
+        id: 24,
+        topic: "Program Development",
+        question: "Translation of the algorithm devised in the design stage into a programming language is called _______.",
+        answer: "Coding",
+        aliases: []
+      },
+      {
+        id: 25,
+        topic: "Program Development",
+        question: "An error in a computer program is called a _______.",
+        answer: "Bug",
+        aliases: []
+      },
+      {
+        id: 26,
+        topic: "Program Development",
+        question: "_______ is the final stage of program development that consists of organising all the material that describes the program.",
+        answer: "Documentation",
+        aliases: ["program documentation"]
+      },
+      {
+        id: 27,
+        topic: "Program Development",
+        question: "_______ remarks consist of statements in the program that are not executed, but point out the purpose of various parts of the program.",
+        answer: "Internal",
+        aliases: ["internal documentation", "comment", "comments"]
+      },
+      {
+        id: 28,
+        topic: "Program Development",
+        question: "The object code is the result of the compilation process and is also referred to as the _______ code.",
+        answer: "Target",
+        aliases: ["target code"]
+      },
+      {
+        id: 29,
+        topic: "Program Development",
+        question: "In good programming practices, the acronym STL means _______.",
+        answer: "Standard Template Library",
+        aliases: []
+      },
+      {
+        id: 30,
+        topic: "Program Development",
+        question: "_______ is designed to verify that the developed system and programs work correctly (covering stress, recovery, compliance, and security testing).",
+        answer: "Structural System Testing",
+        aliases: ["structural testing"]
+      },
+      {
+        id: 31,
+        topic: "Program Development",
+        question: "_______ is designed to ensure that the system requirements and specifications are achieved.",
+        answer: "Functional System Testing",
+        aliases: ["functional testing"]
+      },
+      {
+        id: 32,
+        topic: "Program Development",
+        question: "The two major reasons for program documentation are _______ and extensibility.",
+        answer: "Clarity",
+        aliases: []
+      },
+
+      // --- 5. Algorithms, Flowcharts & Pseudocode ---
+      {
+        id: 33,
+        topic: "Algorithms & Flowcharts",
+        question: "An _______ is a finite sequence of unambiguous instructions for solving a problem in a finite amount of time.",
+        answer: "Algorithm",
+        aliases: []
+      },
+      {
+        id: 34,
+        topic: "Algorithms & Flowcharts",
+        question: "The _______ phase is the testing phase whereby the programmer confirms that the algorithm yields the desired result in a reasonable amount of time.",
+        answer: "Algorithm evaluation",
+        aliases: ["evaluation"]
+      },
+      {
+        id: 35,
+        topic: "Algorithms & Flowcharts",
+        question: "_______ are algorithms that have the same function calling themselves.",
+        answer: "Recursive algorithms",
+        aliases: ["recursive", "recursion"]
+      },
+      {
+        id: 36,
+        topic: "Algorithms & Flowcharts",
+        question: "_______ are algorithms that do not recall back the same algorithm or function.",
+        answer: "Non-recursive algorithms",
+        aliases: ["non recursive algorithms", "non-recursive", "non recursive"]
+      },
+      {
+        id: 37,
+        topic: "Algorithms & Flowcharts",
+        question: "A _______ consists of special geometric symbols connected by arrows.",
+        answer: "Flowchart",
+        aliases: ["flow chart"]
+      },
+      {
+        id: 38,
+        topic: "Algorithms & Flowcharts",
+        question: "In flowcharting, the acronym ANSI stands for _______.",
+        answer: "American National Standards Institute",
+        aliases: []
+      },
+      {
+        id: 39,
+        topic: "Algorithms & Flowcharts",
+        question: "In an ANSI flowchart, the _______ symbol is used for any logic or comparison operations and has one entry and two exit paths.",
+        answer: "Decision",
+        aliases: ["decision symbol", "diamond"]
+      },
+      {
+        id: 40,
+        topic: "Algorithms & Flowcharts",
+        question: "_______ is an abbreviated version of actual computer code where geometric symbols are replaced by English-like statements.",
+        answer: "Pseudo code",
+        aliases: ["pseudocode", "pseudo-code"]
+      },
+
+      // --- 6. Data Types & Data Structures ---
+      {
+        id: 41,
+        topic: "Data Types & Structures",
+        question: "_______ consist of positive and negative whole values such as 500, 112, and 77.",
+        answer: "Integers",
+        aliases: ["integer"]
+      },
+      {
+        id: 42,
+        topic: "Data Types & Structures",
+        question: "_______ consist of values with fractional parts such as 257.29 and 20.10.",
+        answer: "Real numbers",
+        aliases: ["real", "real number"]
+      },
+      {
+        id: 43,
+        topic: "Data Types & Structures",
+        question: "Standard ASCII uses _______-bits to represent each character.",
+        answer: "7",
+        aliases: ["seven"]
+      },
+      {
+        id: 44,
+        topic: "Data Types & Structures",
+        question: "A _______ consists of a sequence of characters enclosed in single or double quotation marks.",
+        answer: "String",
+        aliases: []
+      },
+      {
+        id: 45,
+        topic: "Data Types & Structures",
+        question: "A _______ is a means of organising related data items.",
+        answer: "Data structure",
+        aliases: ["data structures"]
+      },
+      {
+        id: 46,
+        topic: "Data Types & Structures",
+        question: "A _______ is a sequence of zero or more elements called nodes, each containing data and a pointer to its successor.",
+        answer: "Linked list",
+        aliases: []
+      },
+      {
+        id: 47,
+        topic: "Data Types & Structures",
+        question: "In every linked list, there is a special pointer called the _______ pointer which indicates the absence of a node successor.",
+        answer: "Null",
+        aliases: []
+      },
+      {
+        id: 48,
+        topic: "Data Types & Structures",
+        question: "A _______ is a linear data structure in which insertion and deletion can only be done at one end called the TOP.",
+        answer: "Stack",
+        aliases: []
+      },
+      {
+        id: 49,
+        topic: "Data Types & Structures",
+        question: "In a stack data structure, _______ is the process of adding elements to the stack.",
+        answer: "PUSH",
+        aliases: ["push"]
+      },
+      {
+        id: 50,
+        topic: "Data Types & Structures",
+        question: "A _______ is a data structure with two ends, in which insertion is made at the REAR and deletion is done at the FRONT (FIFO scheme).",
+        answer: "Queue",
+        aliases: []
+      },
+      {
+        id: 51,
+        topic: "Data Types & Structures",
+        question: "A _______ is a partially ordered data structure (or binary tree with keys) used in implementing priority queues.",
+        answer: "Heap",
+        aliases: []
+      },
+      {
+        id: 52,
+        topic: "Data Types & Structures",
+        question: "A _______ is a connected acyclic graph.",
+        answer: "Tree",
+        aliases: []
+      },
+
+      // --- 7. Complexity, Efficiency, Sorting & Searching ---
+      {
+        id: 53,
+        topic: "Complexity & Algorithms",
+        question: "The _______ efficiency of an algorithm seeks to provide information on random input.",
+        answer: "Average-case",
+        aliases: ["average case", "average"]
+      },
+      {
+        id: 54,
+        topic: "Complexity & Algorithms",
+        question: "_______ classifies problems according to their inherent difficulty.",
+        answer: "Computational complexity",
+        aliases: ["complexity"]
+      },
+      {
+        id: 55,
+        topic: "Complexity & Algorithms",
+        question: "Problems that can be solved in polynomial time are called _______ problems.",
+        answer: "Tractable",
+        aliases: []
+      },
+      {
+        id: 56,
+        topic: "Complexity & Algorithms",
+        question: "Decision problems that cannot be solved at all by any algorithm (such as Alan Turing's Halting Problem) are called _______ problems.",
+        answer: "Undecidable",
+        aliases: ["undecidable problems"]
+      },
+      {
+        id: 57,
+        topic: "Sorting & Searching",
+        question: "_______ is an example of a sorting algorithm that adopts the divide-and-conquer technique by splitting and merging halves.",
+        answer: "Merge sort",
+        aliases: ["mergesort"]
+      },
+      {
+        id: 58,
+        topic: "Sorting & Searching",
+        question: "_______ (also known as Partition-Exchange Sort) divides input elements according to their respective values.",
+        answer: "Quick sort",
+        aliases: ["quicksort"]
+      },
+      {
+        id: 59,
+        topic: "Sorting & Searching",
+        question: "The _______ is a remarkably efficient algorithm for searching in a sorted array.",
+        answer: "Binary search",
+        aliases: []
+      },
+      {
+        id: 60,
+        topic: "Sorting & Searching",
+        question: "_______ is an optimisation technique belonging to the family of local search, used in AI and the Travelling Salesman Problem.",
+        answer: "Hill climbing",
+        aliases: ["hill-climbing"]
+      }
+    ];
+
+    /* ========================================================================
+       APPLICATION STATE
+       ======================================================================== */
+    const state = {
+      questions: [],
+      currentIndex: 0,
+      userAnswers: [],      // Array of strings
+      flagged: [],          // Array of booleans
+      instantChecked: [],   // Array of booleans (for Instant Feedback Mode)
+      hintsUsed: [],        // Array of booleans
+      feedbackMode: "exam", // "exam" | "instant"
+      timerSeconds: 0,
+      initialSeconds: 0,
+      timerInterval: null,
+      startTimeTimestamp: null,
+      endTimeTimestamp: null,
+      activeFilter: "all"
+    };
+
+    /* ========================================================================
+       DOM ELEMENT REFERENCES
+       ======================================================================== */
+    const dom = {
+      setupScreen: document.getElementById("setupScreen"),
+      examScreen: document.getElementById("examScreen"),
+      resultsScreen: document.getElementById("resultsScreen"),
+
+      examHud: document.getElementById("examHud"),
+      timerDisplay: document.getElementById("timerDisplay"),
+      timerText: document.getElementById("timerText"),
+      submitExamBtn: document.getElementById("submitExamBtn"),
+      progressStrip: document.getElementById("progressStrip"),
+      progressFill: document.getElementById("progressFill"),
+
+      questionCountSelect: document.getElementById("questionCountSelect"),
+      timerSelect: document.getElementById("timerSelect"),
+      feedbackModeSelect: document.getElementById("feedbackModeSelect"),
+      shuffleToggle: document.getElementById("shuffleToggle"),
+      topicTagsContainer: document.getElementById("topicTagsContainer"),
+      startExamBtn: document.getElementById("startExamBtn"),
+
+      questionCounterBadge: document.getElementById("questionCounterBadge"),
+      questionTopicBadge: document.getElementById("questionTopicBadge"),
+      questionPrompt: document.getElementById("questionPrompt"),
+      answerInput: document.getElementById("answerInput"),
+      hintBtn: document.getElementById("hintBtn"),
+      hintDisplay: document.getElementById("hintDisplay"),
+      checkInstantBtn: document.getElementById("checkInstantBtn"),
+      instantFeedbackDisplay: document.getElementById("instantFeedbackDisplay"),
+
+      prevBtn: document.getElementById("prevBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      flagBtn: document.getElementById("flagBtn"),
+
+      paletteGrid: document.getElementById("paletteGrid"),
+      answeredSummaryText: document.getElementById("answeredSummaryText"),
+
+      scoreCircle: document.getElementById("scoreCircle"),
+      scorePercentage: document.getElementById("scorePercentage"),
+      scoreGradeLabel: document.getElementById("scoreGradeLabel"),
+      passFailBadge: document.getElementById("passFailBadge"),
+      resultHeadline: document.getElementById("resultHeadline"),
+      rawScoreText: document.getElementById("rawScoreText"),
+      timeTakenText: document.getElementById("timeTakenText"),
+      accuracyText: document.getElementById("accuracyText"),
+      retakeMissedBtn: document.getElementById("retakeMissedBtn"),
+      newSessionBtn: document.getElementById("newSessionBtn"),
+      topicBreakdownGrid: document.getElementById("topicBreakdownGrid"),
+
+      countAll: document.getElementById("countAll"),
+      countCorrect: document.getElementById("countCorrect"),
+      countIncorrect: document.getElementById("countIncorrect"),
+      reviewList: document.getElementById("reviewList"),
+
+      confirmModal: document.getElementById("confirmModal"),
+      modalTitle: document.getElementById("modalTitle"),
+      modalMessage: document.getElementById("modalMessage"),
+      modalCancelBtn: document.getElementById("modalCancelBtn"),
+      modalConfirmBtn: document.getElementById("modalConfirmBtn")
+    };
+
+    /* ========================================================================
+       UTILITY FUNCTIONS & SMART GRADING LOGIC
+       ======================================================================== */
+
+    /**
+     * Normalizes text for fair, smart CBT comparison:
+     * - Lowercases text
+     * - Replaces hyphens/slashes with spaces
+     * - Strips punctuation (periods, commas, quotes, parentheses)
+     * - Collapses multiple spaces into a single space
+     */
+    function normalizeAnswer(str) {
+      if (!str) return "";
+      return str
+        .toString()
+        .toLowerCase()
+        .replace(/[-_/]/g, " ")
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'"]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    /**
+     * Evaluates whether the user's input matches the official PDF answer
+     * or any of its accepted variations/aliases.
+     */
+    function isAnswerCorrect(userInput, questionObj) {
+      const normalizedUser = normalizeAnswer(userInput);
+      if (!normalizedUser) return false;
+
+      const validTargets = [questionObj.answer, ...(questionObj.aliases || [])].map(normalizeAnswer);
+
+      // Exact normalized match
+      if (validTargets.includes(normalizedUser)) {
+        return true;
+      }
+
+      // Allow optional leading articles ("a ", "an ", "the ")
+      const stripArticle = (s) => s.replace(/^(a|an|the)\s+/, "");
+      const userNoArticle = stripArticle(normalizedUser);
+
+      return validTargets.some((target) => stripArticle(target) === userNoArticle);
+    }
+
+    /**
+     * Fisher-Yates shuffle
+     */
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    /**
+     * Formats seconds into MM:SS
+     */
+    function formatTime(totalSeconds) {
+      const mins = Math.floor(Math.max(0, totalSeconds) / 60);
+      const secs = Math.max(0, totalSeconds) % 60;
+      return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    }
+
+    /**
+     * Escapes HTML characters to prevent injection when rendering user input
+     */
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    /* ========================================================================
+       INITIALIZATION & SETUP SCREEN
+       ======================================================================== */
+    function initSetupScreen() {
+      // Populate unique topics on start screen
+      const topicCounts = {};
+      QUESTION_BANK.forEach((q) => {
+        topicCounts[q.topic] = (topicCounts[q.topic] || 0) + 1;
+      });
+
+      dom.topicTagsContainer.innerHTML = Object.entries(topicCounts)
+        .map(([topic, count]) => `<span class="topic-tag">${escapeHtml(topic)} (${count})</span>`)
+        .join("");
+    }
+
+    /**
+     * Starts a CBT session with either custom pool (e.g. missed questions) or setup config
+     */
+    function startSession(customQuestions = null) {
+      const countVal = dom.questionCountSelect.value;
+      const timerMins = parseInt(dom.timerSelect.value, 10);
+      const shouldShuffle = dom.shuffleToggle.checked;
+      state.feedbackMode = dom.feedbackModeSelect.value;
+
+      let pool = customQuestions ? [...customQuestions] : [...QUESTION_BANK];
+
+      if (shouldShuffle || customQuestions) {
+        pool = shuffleArray(pool);
+      }
+
+      if (!customQuestions && countVal !== "all") {
+        pool = pool.slice(0, parseInt(countVal, 10));
+      }
+
+      state.questions = pool;
+      state.currentIndex = 0;
+      state.userAnswers = new Array(pool.length).fill("");
+      state.flagged = new Array(pool.length).fill(false);
+      state.instantChecked = new Array(pool.length).fill(false);
+      state.hintsUsed = new Array(pool.length).fill(false);
+      state.startTimeTimestamp = Date.now();
+      state.endTimeTimestamp = null;
+
+      // Setup Timer
+      clearInterval(state.timerInterval);
+      if (timerMins > 0) {
+        state.initialSeconds = timerMins * 60;
+        state.timerSeconds = timerMins * 60;
+        dom.timerText.textContent = formatTime(state.timerSeconds);
+        dom.timerDisplay.classList.remove("warning", "danger");
+        startCountdownTimer();
+      } else {
+        state.initialSeconds = 0;
+        state.timerSeconds = 0;
+        dom.timerText.textContent = "UNTIMED";
+        dom.timerDisplay.classList.remove("warning", "danger");
+      }
+
+      // Toggle UI Views
+      dom.setupScreen.classList.add("hidden");
+      dom.resultsScreen.classList.add("hidden");
+      dom.examScreen.classList.remove("hidden");
+      dom.examHud.classList.remove("hidden");
+      dom.progressStrip.classList.remove("hidden");
+
+      buildPalette();
+      renderQuestion();
+    }
+
+    function startCountdownTimer() {
+      state.timerInterval = setInterval(() => {
+        state.timerSeconds--;
+        dom.timerText.textContent = formatTime(state.timerSeconds);
+
+        if (state.timerSeconds <= 60) {
+          dom.timerDisplay.classList.remove("warning");
+          dom.timerDisplay.classList.add("danger");
+        } else if (state.timerSeconds <= 180) {
+          dom.timerDisplay.classList.add("warning");
+        }
+
+        if (state.timerSeconds <= 0) {
+          clearInterval(state.timerInterval);
+          finalizeAndGradeExam();
+        }
+      }, 1000);
+    }
+
+    /* ========================================================================
+       CBT EXAM INTERFACE RENDERING & INTERACTIONS
+       ======================================================================== */
+    function renderQuestion() {
+      const idx = state.currentIndex;
+      const total = state.questions.length;
+      const q = state.questions[idx];
+      const currentAns = state.userAnswers[idx];
+
+      // Header badges
+      dom.questionCounterBadge.textContent = `Question ${idx + 1} of ${total}`;
+      dom.questionTopicBadge.textContent = q.topic;
+
+      // Render prompt with live visual blank
+      updateVisualBlankPrompt(q.question, currentAns);
+
+      // Input field value & lock state
+      dom.answerInput.value = currentAns;
+      const isLockedInInstant = state.feedbackMode === "instant" && state.instantChecked[idx];
+      dom.answerInput.disabled = isLockedInInstant;
+
+      // Instant feedback button visibility
+      if (state.feedbackMode === "instant") {
+        dom.checkInstantBtn.classList.remove("hidden");
+        dom.checkInstantBtn.disabled = isLockedInInstant || !currentAns.trim();
+      } else {
+        dom.checkInstantBtn.classList.add("hidden");
+      }
+
+      // Hint state
+      if (state.hintsUsed[idx]) {
+        showHintBanner(q);
+      } else {
+        dom.hintDisplay.classList.add("hidden");
+        dom.hintDisplay.innerHTML = "";
+      }
+
+      // Instant feedback banner state
+      if (isLockedInInstant) {
+        renderInstantFeedbackBanner(q, currentAns);
+      } else {
+        dom.instantFeedbackDisplay.classList.add("hidden");
+      }
+
+      // Flag button state
+      if (state.flagged[idx]) {
+        dom.flagBtn.classList.add("active");
+        dom.flagBtn.textContent = "🚩 Flagged for Review";
+      } else {
+        dom.flagBtn.classList.remove("active");
+        dom.flagBtn.textContent = "🚩 Flag for Review";
+      }
+
+      // Prev / Next button states
+      dom.prevBtn.disabled = idx === 0;
+      dom.nextBtn.textContent = idx === total - 1 ? "Review & Finish ✓" : "Next →";
+
+      updatePalette();
+      updateProgress();
+
+      if (!isLockedInInstant) {
+        dom.answerInput.focus();
+      }
+    }
+
+    function updateVisualBlankPrompt(questionText, userValue) {
+      const trimmed = userValue.trim();
+      const blankContent = trimmed ? escapeHtml(trimmed) : "_______";
+      const filledClass = trimmed ? "visual-blank filled" : "visual-blank";
+      const safeHtml = escapeHtml(questionText).replace(
+        "_______",
+        `<span id="inlineBlankSpan" class="${filledClass}">${blankContent}</span>`
+      );
+      dom.questionPrompt.innerHTML = safeHtml;
+    }
+
+    function showHintBanner(q) {
+      const cleanAns = q.answer.trim();
+      const firstChar = cleanAns.charAt(0).toUpperCase();
+      const wordCount = cleanAns.split(/\s+/).length;
+      const letterCount = cleanAns.replace(/\s+/g, "").length;
+
+      dom.hintDisplay.innerHTML = `
+        <span>💡 <strong>Hint:</strong> Starts with <strong>"${escapeHtml(firstChar)}"</strong> •
+        ${wordCount} ${wordCount === 1 ? "word" : "words"} (${letterCount} characters)</span>
+      `;
+      dom.hintDisplay.classList.remove("hidden");
+    }
+
+    function renderInstantFeedbackBanner(q, userAns) {
+      const correct = isAnswerCorrect(userAns, q);
+      dom.instantFeedbackDisplay.className = `instant-feedback ${correct ? "correct" : "incorrect"}`;
+
+      if (correct) {
+        dom.instantFeedbackDisplay.innerHTML = `
+          <span>✅</span>
+          <div>
+            <strong>Correct!</strong> Well done.
+            ${normalizeAnswer(userAns) !== normalizeAnswer(q.answer)
+              ? `Official PDF phrasing: <strong>${escapeHtml(q.answer)}</strong>`
+              : ""}
+          </div>
+        `;
+      } else {
+        dom.instantFeedbackDisplay.innerHTML = `
+          <span>❌</span>
+          <div>
+            <strong>Incorrect.</strong> The official answer from the CIT237 summary is:
+            <strong>${escapeHtml(q.answer)}</strong>
+          </div>
+        `;
+      }
+      dom.instantFeedbackDisplay.classList.remove("hidden");
+    }
+
+    function buildPalette() {
+      dom.paletteGrid.innerHTML = state.questions
+        .map(
+          (_, i) =>
+            `<button type="button" class="q-node" data-index="${i}" aria-label="Go to question ${i + 1}">${
+              i + 1
+            }</button>`
+        )
+        .join("");
+
+      dom.paletteGrid.querySelectorAll(".q-node").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.currentIndex = parseInt(btn.dataset.index, 10);
+          renderQuestion();
+        });
+      });
+    }
+
+    function updatePalette() {
+      const nodes = dom.paletteGrid.querySelectorAll(".q-node");
+      let answeredCount = 0;
+
+      nodes.forEach((node, i) => {
+        const hasAns = state.userAnswers[i].trim().length > 0;
+        if (hasAns) answeredCount++;
+
+        node.className = "q-node";
+        if (i === state.currentIndex) node.classList.add("current");
+        if (state.flagged[i]) node.classList.add("flagged");
+
+        if (state.feedbackMode === "instant" && state.instantChecked[i]) {
+          const right = isAnswerCorrect(state.userAnswers[i], state.questions[i]);
+          node.classList.add(right ? "instant-right" : "instant-wrong");
+        } else if (hasAns) {
+          node.classList.add("answered");
+        }
+      });
+
+      dom.answeredSummaryText.textContent = `${answeredCount} / ${state.questions.length} Answered`;
+    }
+
+    function updateProgress() {
+      const answeredCount = state.userAnswers.filter((a) => a.trim().length > 0).length;
+      const pct = Math.round((answeredCount / state.questions.length) * 100);
+      dom.progressFill.style.width = `${pct}%`;
+    }
+
+    /* ========================================================================
+       EVENT LISTENERS FOR EXAM CONTROLS
+       ======================================================================== */
+    dom.startExamBtn.addEventListener("click", () => startSession());
+
+    dom.answerInput.addEventListener("input", (e) => {
+      const val = e.target.value;
+      state.userAnswers[state.currentIndex] = val;
+
+      // Update inline blank live without re-rendering whole card
+      const span = document.getElementById("inlineBlankSpan");
+      if (span) {
+        const trimmed = val.trim();
+        span.textContent = trimmed || "_______";
+        span.classList.toggle("filled", Boolean(trimmed));
+      }
+
+      if (state.feedbackMode === "instant") {
+        dom.checkInstantBtn.disabled = !val.trim() || state.instantChecked[state.currentIndex];
+      }
+
+      updatePalette();
+      updateProgress();
+    });
+
+    // Support Enter key to check answer (in instant mode) or advance to next question
+    dom.answerInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const idx = state.currentIndex;
+
+        if (state.feedbackMode === "instant" && !state.instantChecked[idx]) {
+          if (state.userAnswers[idx].trim()) {
+            state.instantChecked[idx] = true;
+            renderQuestion();
+          }
+          return;
+        }
+
+        if (idx < state.questions.length - 1) {
+          state.currentIndex++;
+          renderQuestion();
+        } else {
+          openSubmitConfirmation();
+        }
+      }
+    });
+
+    dom.checkInstantBtn.addEventListener("click", () => {
+      const idx = state.currentIndex;
+      if (!state.userAnswers[idx].trim()) return;
+      state.instantChecked[idx] = true;
+      renderQuestion();
+    });
+
+    dom.hintBtn.addEventListener("click", () => {
+      const idx = state.currentIndex;
+      state.hintsUsed[idx] = true;
+      showHintBanner(state.questions[idx]);
+      dom.answerInput.focus();
+    });
+
+    dom.prevBtn.addEventListener("click", () => {
+      if (state.currentIndex > 0) {
+        state.currentIndex--;
+        renderQuestion();
+      }
+    });
+
+    dom.nextBtn.addEventListener("click", () => {
+      if (state.currentIndex < state.questions.length - 1) {
+        state.currentIndex++;
+        renderQuestion();
+      } else {
+        openSubmitConfirmation();
+      }
+    });
+
+    dom.flagBtn.addEventListener("click", () => {
+      const idx = state.currentIndex;
+      state.flagged[idx] = !state.flagged[idx];
+      renderQuestion();
+    });
+
+    dom.submitExamBtn.addEventListener("click", openSubmitConfirmation);
+
+    function openSubmitConfirmation() {
+      const unanswered = state.userAnswers.filter((a) => !a.trim()).length;
+      const flaggedCount = state.flagged.filter(Boolean).length;
+
+      dom.modalTitle.textContent = "Submit CBT Examination?";
+      let details = `You have answered <strong>${state.questions.length - unanswered}</strong> out of <strong>${state.questions.length}</strong> questions.`;
+      if (unanswered > 0) {
+        details += `<br/><span style="color: var(--danger); font-weight: 600;">• ${unanswered} question(s) are still unanswered.</span>`;
+      }
+      if (flaggedCount > 0) {
+        details += `<br/><span style="color: var(--warning); font-weight: 600;">• ${flaggedCount} question(s) are flagged for review.</span>`;
+      }
+
+      dom.modalMessage.innerHTML = details;
+      dom.confirmModal.classList.remove("hidden");
+    }
+
+    dom.modalCancelBtn.addEventListener("click", () => {
+      dom.confirmModal.classList.add("hidden");
+    });
+
+    dom.modalConfirmBtn.addEventListener("click", () => {
+      dom.confirmModal.classList.add("hidden");
+      finalizeAndGradeExam();
+    });
+
+    /* ========================================================================
+       GRADING & RESULTS ANALYTICS
+       ======================================================================== */
+    function finalizeAndGradeExam() {
+      clearInterval(state.timerInterval);
+      state.endTimeTimestamp = Date.now();
+
+      // Hide Exam UI, Show Results UI
+      dom.examScreen.classList.add("hidden");
+      dom.examHud.classList.add("hidden");
+      dom.progressStrip.classList.add("hidden");
+      dom.resultsScreen.classList.remove("hidden");
+
+      const total = state.questions.length;
+      let correctCount = 0;
+      const topicStats = {};
+      const gradedItems = [];
+
+      state.questions.forEach((q, idx) => {
+        const userAns = state.userAnswers[idx];
+        const correct = isAnswerCorrect(userAns, q);
+        if (correct) correctCount++;
+
+        if (!topicStats[q.topic]) {
+          topicStats[q.topic] = { total: 0, correct: 0 };
+        }
+        topicStats[q.topic].total++;
+        if (correct) topicStats[q.topic].correct++;
+
+        gradedItems.push({
+          index: idx + 1,
+          questionObj: q,
+          userAnswer: userAns,
+          isCorrect: correct
+        });
+      });
+
+      const pct = Math.round((correctCount / total) * 100);
+      const passed = pct >= 50;
+
+      // Elapsed time calculation
+      const elapsedSeconds = Math.max(
+        1,
+        Math.round((state.endTimeTimestamp - state.startTimeTimestamp) / 1000)
+      );
+
+      // Update Summary Banner
+      dom.scorePercentage.textContent = `${pct}%`;
+      dom.scoreCircle.className = `score-circle ${passed ? "pass" : "fail"}`;
+      dom.passFailBadge.className = `status-badge ${passed ? "pass" : "fail"}`;
+      dom.passFailBadge.textContent = passed ? "PASSED (≥ 50%)" : "NEEDS REVIEW (< 50%)";
+
+      dom.resultHeadline.textContent =
+        pct >= 80
+          ? "Outstanding Mastery of CIT237!"
+          : passed
+          ? "Good Job! You Passed the Practice Test."
+          : "Keep Practicing — Review the Missed Concepts Below.";
+
+      dom.rawScoreText.textContent = `${correctCount} / ${total}`;
+      dom.timeTakenText.textContent = formatTime(elapsedSeconds);
+      dom.accuracyText.textContent = `${pct}%`;
+
+      // Toggle 'Retake Missed Questions' button
+      const missedQuestions = gradedItems
+        .filter((item) => !item.isCorrect)
+        .map((item) => item.questionObj);
+
+      if (missedQuestions.length > 0) {
+        dom.retakeMissedBtn.classList.remove("hidden");
+        dom.retakeMissedBtn.textContent = `↻ Retake Missed Questions (${missedQuestions.length})`;
+        dom.retakeMissedBtn.onclick = () => startSession(missedQuestions);
+      } else {
+        dom.retakeMissedBtn.classList.add("hidden");
+      }
+
+      // Render Topic Breakdown
+      dom.topicBreakdownGrid.innerHTML = Object.entries(topicStats)
+        .map(([topic, data]) => {
+          const tPct = Math.round((data.correct / data.total) * 100);
+          const barColor =
+            tPct >= 75 ? "var(--success)" : tPct >= 50 ? "var(--primary)" : "var(--danger)";
+          return `
+            <div class="topic-bar-item">
+              <div class="topic-bar-top">
+                <span>${escapeHtml(topic)}</span>
+                <span>${data.correct}/${data.total} (${tPct}%)</span>
+              </div>
+              <div class="topic-track">
+                <div class="topic-fill" style="width: ${tPct}%; background: ${barColor};"></div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      // Filter Counts & Review List
+      dom.countAll.textContent = total;
+      dom.countCorrect.textContent = correctCount;
+      dom.countIncorrect.textContent = total - correctCount;
+
+      state.gradedItems = gradedItems;
+      state.activeFilter = "all";
+      updateFilterTabs();
+      renderReviewList();
+    }
+
+    function renderReviewList() {
+      const filtered = state.gradedItems.filter((item) => {
+        if (state.activeFilter === "correct") return item.isCorrect;
+        if (state.activeFilter === "incorrect") return !item.isCorrect;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        dom.reviewList.innerHTML = `
+          <div class="card" style="padding: 2rem; text-align: center; color: var(--text-muted);">
+            No questions match this filter category.
+          </div>
+        `;
+        return;
+      }
+
+      dom.reviewList.innerHTML = filtered
+        .map((item) => {
+          const filledSentence = escapeHtml(item.questionObj.question).replace(
+            "_______",
+            `<span class="ans-chip ${item.isCorrect ? "right" : "wrong"}">${escapeHtml(
+              item.questionObj.answer
+            )}</span>`
+          );
+
+          const userDisplay = item.userAnswer.trim()
+            ? `<span class="ans-chip ${item.isCorrect ? "right" : "wrong"}">${escapeHtml(
+                item.userAnswer.trim()
+              )}</span>`
+            : `<span class="ans-chip wrong">(Unanswered)</span>`;
+
+          return `
+            <div class="card review-item ${item.isCorrect ? "correct" : "incorrect"}">
+              <div class="review-item-head">
+                <span style="color: var(--text-secondary);">
+                  Question #${item.index} • ${escapeHtml(item.questionObj.topic)}
+                </span>
+                <span style="color: ${item.isCorrect ? "var(--success)" : "var(--danger)"};">
+                  ${item.isCorrect ? "✓ CORRECT" : "✕ INCORRECT"}
+                </span>
+              </div>
+              <div class="review-q-text">${filledSentence}</div>
+              <div class="review-answers">
+                <div><strong>Your Answer:</strong> ${userDisplay}</div>
+                <div><strong>Official PDF Answer:</strong> <span class="ans-chip right">${escapeHtml(
+                  item.questionObj.answer
+                )}</span></div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function updateFilterTabs() {
+      document.querySelectorAll(".filter-tab").forEach((tab) => {
+        tab.classList.toggle("active", tab.dataset.filter === state.activeFilter);
+      });
+    }
+
+    document.querySelectorAll(".filter-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        state.activeFilter = tab.dataset.filter;
+        updateFilterTabs();
+        renderReviewList();
+      });
+    });
+
+    dom.newSessionBtn.addEventListener("click", () => {
+      dom.resultsScreen.classList.add("hidden");
+      dom.setupScreen.classList.remove("hidden");
+    });
+
+    // Boot application on window load
+    window.addEventListener("DOMContentLoaded", initSetupScreen);
+  </script>
+</body>
+</html>
